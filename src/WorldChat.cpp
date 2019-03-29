@@ -126,6 +126,12 @@ public:
         {
             if (!itr->second)
                 continue;
+            if (!itr->second->GetPlayer()){
+                continue;
+            }
+            if(!itr->second->GetPlayer()->IsInWorld()){
+                continue;
+            }
 
 
             Player* target = itr->second->GetPlayer();
@@ -196,6 +202,13 @@ public:
         {
             if (!itr->second)
                 continue;
+                
+            if (!itr->second->GetPlayer()){
+                continue;
+            }
+            if(!itr->second->GetPlayer()->IsInWorld()){
+                continue;
+            }
 
 
             Player* target = itr->second->GetPlayer();
@@ -240,6 +253,13 @@ public:
         {
             if (!itr->second)
                 continue;
+                
+            if (!itr->second->GetPlayer()){
+                continue;
+            }
+            if(!itr->second->GetPlayer()->IsInWorld()){
+                continue;
+            }
 
 
             Player* target = itr->second->GetPlayer();
