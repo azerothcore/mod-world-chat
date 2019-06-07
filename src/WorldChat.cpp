@@ -218,7 +218,7 @@ public:
             Player* target = itr->second->GetPlayer();
             uint32 guid2 = target->GetGUID();
 
-            if (WorldChat[guid2].chat == 1 && target->GetTeamId() == TEAM_HORDE)
+            if (WorldChat[guid2].chat == 1 && (target->GetTeamId() == TEAM_HORDE || target->IsGameMaster()))
             {
                 snprintf(message, 1024, "[World][%s][%s%s|r]: %s%s|r", world_chat_GMIcon.c_str(), world_chat_ClassColor[player->getClass() - 1].c_str(), player->GetName().c_str(), WORLD_CHAT_WHITE.c_str(), msg);
                 ChatHandler(target->GetSession()).PSendSysMessage("%s", message);
@@ -271,7 +271,7 @@ public:
             Player* target = itr->second->GetPlayer();
             uint32 guid2 = target->GetGUID();
 
-            if (WorldChat[guid2].chat == 1 && target->GetTeamId() == TEAM_ALLIANCE)
+            if (WorldChat[guid2].chat == 1 && (target->GetTeamId() == TEAM_ALLIANCE || target->IsGameMaster()))
             {
                 snprintf(message, 1024, "[World][%s][%s%s|r]: %s%s|r", world_chat_GMIcon.c_str(), world_chat_ClassColor[player->getClass() - 1].c_str(), player->GetName().c_str(), WORLD_CHAT_WHITE.c_str(), msg);
                 ChatHandler(target->GetSession()).PSendSysMessage("%s",message);
