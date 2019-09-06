@@ -106,6 +106,9 @@ public:
             return true;
         }
 
+        if (!pChat->GetSession()->GetPlayer()->CanSpeak())
+            return false;
+
         if (!*msg)
             return false;
 
