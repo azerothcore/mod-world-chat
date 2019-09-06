@@ -106,14 +106,14 @@ public:
             return true;
         }
 
-        if (!pChat->GetSession()->GetPlayer()->CanSpeak())
-            return false;
-
         if (!*msg)
             return false;
 
         Player* player = pChat->GetSession()->GetPlayer();
         uint32 guid = player->GetGUID();
+
+        if (!pChat->GetSession()->GetPlayer()->CanSpeak())
+            return false;
 
         if (!WorldChat[guid].chat) {
             ChatHandler(player->GetSession()).PSendSysMessage("[WC] %sWorld Chat is disabled. (.chat)|r", WORLD_CHAT_RED.c_str());
