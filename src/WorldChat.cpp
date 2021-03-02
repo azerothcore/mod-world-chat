@@ -84,13 +84,6 @@ public: WorldChat_Config() : WorldScript("WorldChat_Config") { };
     void OnBeforeConfigLoad(bool reload) override
     {
         if (!reload) {
-            std::string conf_path = _CONF_DIR;
-            std::string cfg_file = conf_path + "/WorldChat.conf";
-            std::string cfg_file_2 = cfg_file + ".dist";
-
-            sConfigMgr->LoadMore(cfg_file_2.c_str());
-            sConfigMgr->LoadMore(cfg_file.c_str());
-
             WC_Config.Enabled = sConfigMgr->GetBoolDefault("World_Chat.Enable", true);
             WC_Config.ChannelName = sConfigMgr->GetStringDefault("World_Chat.ChannelName", "World");
             WC_Config.LoginState = sConfigMgr->GetBoolDefault("World_Chat.OnLogin.State", true);
