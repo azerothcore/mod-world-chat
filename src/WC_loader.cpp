@@ -1,5 +1,5 @@
 void AddSC_WorldChatScripts();
 
-void AddWorldChatScripts() {
+void Addmod_world_chatScripts() {
 	AddSC_WorldChatScripts();
 }
