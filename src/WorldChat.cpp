@@ -84,11 +84,11 @@ public: WorldChat_Config() : WorldScript("WorldChat_Config") { };
     void OnBeforeConfigLoad(bool reload) override
     {
         if (!reload) {
-            WC_Config.Enabled = sConfigMgr->GetBoolDefault("World_Chat.Enable", true);
-            WC_Config.ChannelName = sConfigMgr->GetStringDefault("World_Chat.ChannelName", "World");
-            WC_Config.LoginState = sConfigMgr->GetBoolDefault("World_Chat.OnLogin.State", true);
-            WC_Config.CrossFaction = sConfigMgr->GetBoolDefault("World_Chat.CrossFactions", true);
-            WC_Config.Announce = sConfigMgr->GetBoolDefault("World_Chat.Announce", true);
+            WC_Config.Enabled = sConfigMgr->GetOption<bool>("World_Chat.Enable", true);
+            WC_Config.ChannelName = sConfigMgr->GetOption<std::string>("World_Chat.ChannelName", "World");
+            WC_Config.LoginState = sConfigMgr->GetOption<bool>("World_Chat.OnLogin.State", true);
+            WC_Config.CrossFaction = sConfigMgr->GetOption<bool>("World_Chat.CrossFactions", true);
+            WC_Config.Announce = sConfigMgr->GetOption<bool>("World_Chat.Announce", true);
         }
     }
 };
@@ -104,17 +104,20 @@ std::unordered_map<uint32, ChatElements>WorldChat;
 
 void SendWorldMessage(Player* sender, const char* msg, int team) {
 
-    if (!WC_Config.Enabled) {
+    if (!WC_Config.Enabled)
+    {
         ChatHandler(sender->GetSession()).PSendSysMessage("[WC] %sWorld Chat System is disabled.|r", WORLD_CHAT_RED.c_str());
         return;
     }
 
-    if (!sender->CanSpeak()) {
+    if (!sender->CanSpeak())
+    {
         ChatHandler(sender->GetSession()).PSendSysMessage("[WC] %sYou can't use World Chat while muted!|r", WORLD_CHAT_RED.c_str());
         return;
     }
 
-    if (!WorldChat[sender->GetGUID().GetCounter()].chat) {
+    if (!WorldChat[sender->GetGUID().GetCounter()].chat)
+    {
         ChatHandler(sender->GetSession()).PSendSysMessage("[WC] %sWorld Chat is hidden. (.chat off)|r", WORLD_CHAT_RED.c_str());
         return;
     }
@@ -126,11 +129,15 @@ void SendWorldMessage(Player* sender, const char* msg, int team) {
     for (SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
     {
         if (!itr->second)
+        {
             continue;
+        }
+
         if (!itr->second->GetPlayer())
         {
             continue;
         }
+
         if (!itr->second->GetPlayer()->IsInWorld())
         {
             continue;
@@ -143,10 +150,12 @@ void SendWorldMessage(Player* sender, const char* msg, int team) {
         {
             if (WC_Config.CrossFaction || (sender->GetTeamId() == target->GetTeamId()) || target->GetSession()->GetSecurity())
             {
-                if (sender->isGMChat()) {
+                if (sender->isGMChat())
+                {
                     snprintf(message, 1024, "[World][%s][%s|Hplayer:%s|h%s|h|r]: %s%s|r", ((sender->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_DEVELOPER)) ? (world_chat_ClassColor[5] + "DEV|r").c_str() : world_chat_GMIcon.c_str()) , world_chat_ClassColor[sender->getClass() - 1].c_str(), sender->GetName().c_str(), sender->GetName().c_str(), WORLD_CHAT_WHITE.c_str(), msg);
                 }
-                else {
+                else
+                {
                     snprintf(message, 1024, "[World][%s][%s|Hplayer:%s|h%s|h|r]: %s%s|r", world_chat_TeamIcon[sender->GetTeamId()].c_str(), world_chat_ClassColor[sender->getClass() - 1].c_str(), sender->GetName().c_str(), sender->GetName().c_str(), WORLD_CHAT_WHITE.c_str(), msg);
                 }
                 ChatHandler(target->GetSession()).PSendSysMessage("%s", message);
@@ -154,6 +163,8 @@ void SendWorldMessage(Player* sender, const char* msg, int team) {
         }
     }
 }
+
+using namespace Acore::ChatCommands;
 
 class World_Chat : public CommandScript
 {
@@ -164,7 +175,9 @@ public:
     {
 
         if (!*msg)
+        {
             return false;
+        }
 
         SendWorldMessage(pChat->GetSession()->GetPlayer(), msg, -1);
 
@@ -175,7 +188,9 @@ public:
     {
 
         if (!*msg)
+        {
             return false;
+        }
 
         SendWorldMessage(pChat->GetSession()->GetPlayer(), msg, TEAM_HORDE);
 
@@ -186,7 +201,9 @@ public:
     {
 
         if (!*msg)
+        {
             return false;
+        }
 
         SendWorldMessage(pChat->GetSession()->GetPlayer(), msg, TEAM_ALLIANCE);
 
@@ -220,12 +237,14 @@ public:
         Player* player = handler->GetSession()->GetPlayer();
         uint64 guid = player->GetGUID().GetCounter();
 
-        if (!sConfigMgr->GetBoolDefault("World_Chat.Enable", true)) {
+        if (!sConfigMgr->GetOption<bool>("World_Chat.Enable", true))
+        {
             ChatHandler(player->GetSession()).PSendSysMessage("[WC] %sWorld Chat System is disabled.|r", WORLD_CHAT_RED.c_str());
             return true;
         }
 
-        if (!WorldChat[guid].chat) {
+        if (!WorldChat[guid].chat)
+        {
             ChatHandler(player->GetSession()).PSendSysMessage("[WC] %sWorld Chat is already hidden.|r", WORLD_CHAT_RED.c_str());
             return true;
         }
@@ -245,12 +264,14 @@ public:
             { "off",     SEC_PLAYER,     false,    &HandleWorldChatOffCommand,       "" },
             { "",        SEC_PLAYER,     false,    &HandleWorldChatCommand,       "" },
         };
+
         static std::vector<ChatCommand> commandTable =
         {
             { "chat", SEC_PLAYER, true, NULL , "" , wcCommandTable},
             { "chath", SEC_MODERATOR, true, &HandleWorldChatHordeCommand , ""},
             { "chata", SEC_MODERATOR, true, &HandleWorldChatAllianceCommand , ""},
         };
+
         return commandTable;
     }
 };
@@ -270,7 +291,8 @@ public:
         }
     }
 
-    void OnChat(Player* player, uint32 /*type*/, uint32 lang, std::string& msg, Channel* channel) {
+    void OnChat(Player* player, uint32 /*type*/, uint32 lang, std::string& msg, Channel* channel)
+    {
         if (WC_Config.ChannelName != "" && lang != LANG_ADDON && !strcmp(channel->GetName().c_str(), WC_Config.ChannelName.c_str()))
         {
             SendWorldMessage(player, msg.c_str(), -1);
@@ -281,7 +303,7 @@ public:
 
 void AddSC_WorldChatScripts()
 {
-    new WorldChat_Announce;
-    new WorldChat_Config;
-    new World_Chat;
+    new WorldChat_Announce();
+    new WorldChat_Config();
+    new World_Chat();
 }
