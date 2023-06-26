@@ -18,6 +18,10 @@
 #include "Config.h"
 #include <unordered_map>
 
+#if AC_COMPILER == AC_COMPILER_GNU
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 /* VERSION */
 float ver = 2.0f;
 
