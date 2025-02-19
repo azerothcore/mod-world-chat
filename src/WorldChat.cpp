@@ -91,7 +91,7 @@ public: WorldChat_Config() : WorldScript("WorldChat_Config") { };
         if (!reload) {
             WC_Config.Enabled = sConfigMgr->GetOption<bool>("World_Chat.Enable", true);
             WC_Config.ChannelName = sConfigMgr->GetOption<std::string>("World_Chat.ChannelName", "World");
-            WC_Config.LoginState = sConfigMgr->GetOption<bool>("World_Chat.OnPlayerLogin.State", true);
+            WC_Config.LoginState = sConfigMgr->GetOption<bool>("World_Chat.OnLogin.State", true);
             WC_Config.CrossFaction = sConfigMgr->GetOption<bool>("World_Chat.CrossFactions", true);
             WC_Config.Announce = sConfigMgr->GetOption<bool>("World_Chat.Announce", true);
         }
