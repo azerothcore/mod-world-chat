@@ -15,6 +15,7 @@
 #include "Common.h"
 #include "World.h"
 #include "WorldSession.h"
+#include "WorldSessionMgr.h"
 #include "Config.h"
 #include <unordered_map>
 
@@ -90,7 +91,7 @@ public: WorldChat_Config() : WorldScript("WorldChat_Config") { };
         if (!reload) {
             WC_Config.Enabled = sConfigMgr->GetOption<bool>("World_Chat.Enable", true);
             WC_Config.ChannelName = sConfigMgr->GetOption<std::string>("World_Chat.ChannelName", "World");
-            WC_Config.LoginState = sConfigMgr->GetOption<bool>("World_Chat.OnLogin.State", true);
+            WC_Config.LoginState = sConfigMgr->GetOption<bool>("World_Chat.OnPlayerLogin.State", true);
             WC_Config.CrossFaction = sConfigMgr->GetOption<bool>("World_Chat.CrossFactions", true);
             WC_Config.Announce = sConfigMgr->GetOption<bool>("World_Chat.Announce", true);
         }
@@ -128,9 +129,9 @@ void SendWorldMessage(Player* sender, const std::string msg, int team) {
 
     std::string message;
 
-    SessionMap sessions = sWorld->GetAllSessions();
+    WorldSessionMgr::SessionMap sessions = sWorldSessionMgr->GetAllSessions();
 
-    for (SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
+    for (WorldSessionMgr::SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
     {
         if (!itr->second)
         {
@@ -287,7 +288,7 @@ public:
 
     WorldChat_Announce() : PlayerScript("WorldChat_Announce") {}
 
-    void OnLogin(Player* player)
+    void OnPlayerLogin(Player* player)
     {
         // Announce Module
         if (WC_Config.Enabled && WC_Config.Announce)
@@ -296,7 +297,7 @@ public:
         }
     }
 
-    void OnChat(Player* player, uint32 /*type*/, uint32 lang, std::string& msg, Channel* channel)
+    void OnPlayerChat(Player* player, uint32 /*type*/, uint32 lang, std::string& msg, Channel* channel)
     {
         if (WC_Config.ChannelName != "" && lang != LANG_ADDON && channel->GetName() == WC_Config.ChannelName)
         {
