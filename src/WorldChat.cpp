@@ -13,8 +13,6 @@
 #include "Channel.h"
 #include "Chat.h"
 #include "Common.h"
-#include "World.h"
-#include "WorldSession.h"
 #include "WorldSessionMgr.h"
 #include "Config.h"
 #include <unordered_map>
