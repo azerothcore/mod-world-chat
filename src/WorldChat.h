@@ -68,7 +68,11 @@ namespace WC {
             "[World][{}][{}|Hplayer:{}|h{}|h|r]: {}{}|r";
 
     /* Config Variables */
-    struct PlayerState;
+    struct PlayerState {
+        bool chatEnabled;
+
+        PlayerState();
+    };
 
     struct Config {
         std::string channelName;
@@ -80,16 +84,6 @@ namespace WC {
 
         std::unordered_map<uint32, PlayerState> playerStates;
     };
-
-    extern Config g_wcConfig;
-
-    struct PlayerState {
-        bool chatEnabled;
-
-        PlayerState() : chatEnabled(g_wcConfig.loginState) {
-        }
-    };
-
 
     class WorldChat_Config : public WorldScript {
     public:

@@ -17,13 +17,14 @@
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
-namespace WC {
-    static Config g_wcConfig{};
-}
+static WC::Config g_wcConfig;
 
 static std::string strToLower(std::string str) {
     std::transform(str.begin(), str.end(), str.begin(), ::tolower);
     return str;
+}
+
+WC::PlayerState::PlayerState() : chatEnabled(g_wcConfig.loginState) {
 }
 
 void WC::WorldChat_Config::OnBeforeConfigLoad(const bool reload) {
