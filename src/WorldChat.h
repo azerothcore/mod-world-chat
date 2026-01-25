@@ -103,7 +103,12 @@ namespace WC {
 
     class WorldChat_Announce : public PlayerScript {
     public:
-        WorldChat_Announce();
+        WorldChat_Announce()
+            : PlayerScript("WorldChat_Announce", {
+                               PLAYERHOOK_ON_LOGIN,
+                               PLAYERHOOK_CAN_PLAYER_USE_CHANNEL_CHAT,
+                           }) {
+        }
 
         void OnPlayerLogin(Player* player) override;
 

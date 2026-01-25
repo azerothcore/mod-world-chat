@@ -133,13 +133,6 @@ void WC::SendWorldMessage(Player const &sender, const std::string &msg, const in
     }
 }
 
-WC::WorldChat_Announce::WorldChat_Announce()
-    : PlayerScript("WorldChat_Announce", {
-                       PLAYERHOOK_ON_LOGIN,
-                       PLAYERHOOK_CAN_PLAYER_USE_CHANNEL_CHAT,
-                   }) {
-}
-
 void WC::WorldChat_Announce::OnPlayerLogin(Player* player) {
     if (g_wcConfig.enabled && g_wcConfig.announce) {
         ChatHandler(player->GetSession()).SendSysMessage(g_wcConfig.announceMessage);
