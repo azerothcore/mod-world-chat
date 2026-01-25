@@ -27,7 +27,7 @@ static std::string strToLower(std::string str) {
 WC::PlayerState::PlayerState() : chatEnabled(g_wcConfig.loginState) {
 }
 
-void WC::WorldChat_Config::OnBeforeConfigLoad(const bool reload) {
+void WC::WorldChat_Config::OnBeforeConfigLoad(const bool /*reload*/) {
     g_wcConfig.enabled      = sConfigMgr->GetOption<bool>("WorldChat.Enable", true);
     g_wcConfig.crossFaction = sConfigMgr->GetOption<bool>("WorldChat.CrossFaction", true);
     g_wcConfig.announce     = sConfigMgr->GetOption<bool>("WorldChat.Announce", true);
