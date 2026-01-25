@@ -6,15 +6,10 @@
 <--------------------------------------------------------------------------->
 */
 
-#include "WorldChat.h"
-
 #include <ranges>
 
-#include "Channel.h"
-#include "Chat.h"
-#include "CommandScript.h"
+#include "WorldChat.h"
 #include "Config.h"
-#include "PlayerScript.h"
 #include "StringFormat.h"
 #include "WorldSessionMgr.h"
 
